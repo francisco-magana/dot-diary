@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>Dot Diary</title>
+  <defs>
+    <!-- Warm paper background, matching the app background #F6F2EF -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FDFBF9"/>
+      <stop offset="1" stop-color="#EDE7E2"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".9"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Heart color: PALETTE.red ≈ oklch(0.63 0.21 27) -->
+    <linearGradient id="heart" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F0534B"/>
+      <stop offset="1" stop-color="#D93A35"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#1d1b1a" flood-opacity=".22"/>
+    </filter>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#1d1b1a" flood-opacity=".14"/>
+    </filter>
+  </defs>
+
+  <!-- macOS squircle tile (824px body on the 1024 grid) -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#bg)" filter="url(#shadow)"/>
+  <rect x="101.5" y="101.5" width="821" height="821" rx="183.5" fill="none" stroke="url(#rim)" stroke-width="3"/>
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="none" stroke="#1d1b1a" stroke-opacity=".07" stroke-width="2"/>
+
+  <!-- Eight day dots in the ink color -->
+  <g fill="#1d1b1a">
+    <circle cx="312" cy="312" r="30"/>
+    <circle cx="512" cy="312" r="30"/>
+    <circle cx="712" cy="312" r="30"/>
+    <circle cx="312" cy="512" r="30"/>
+    <circle cx="712" cy="512" r="30"/>
+    <circle cx="312" cy="712" r="30"/>
+    <circle cx="512" cy="712" r="30"/>
+    <circle cx="712" cy="712" r="30"/>
+  </g>
+
+  <!-- Selected day: white cell with ink ring, like .cell.is-selected -->
+  <circle cx="512" cy="512" r="112" fill="#fff" filter="url(#soft)"/>
+  <circle cx="512" cy="512" r="112" fill="none" stroke="#1d1b1a" stroke-width="12"/>
+
+  <!-- Material Symbols Rounded "favorite" (filled) -->
+  <path transform="translate(512 518) scale(.165) translate(-480 500)" fill="url(#heart)"
+        d="M480-147q-14 0-28.5-5T426-168l-69-63q-106-97-191.5-192.5T80-634q0-94 63-157t157-63q53 0 100 22.5t80 61.5q33-39 80-61.5T660-854q94 0 157 63t63 157q0 115-85 211T602-230l-68 62q-11 11-25.5 16t-28.5 5Z"/>
+</svg>
