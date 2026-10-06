@@ -1,0 +1,541 @@
+/* ==========================================================================
+   Dot Diary – styles
+   ========================================================================== */
+
+:root {
+  --bg: #F6F2EF;
+  --surface: #fff;
+  --ink: #1d1b1a;
+  --ink-2: #3d3936;
+  --ink-3: #5f5955;
+  --muted: #77706b;
+  --subtle: #8f8984;
+  --faint: #aaa39d;
+  --hover: #EDE7E2;
+  --line: rgba(29, 27, 26, .07);
+  --accent: oklch(0.58 0.2 258);
+  --danger: oklch(0.58 0.2 27);
+
+  --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --cell-w: 40px;
+  --cell-h: 32px;
+  --label-w: 44px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; background: none; border: none; padding: 0; cursor: pointer; }
+input, textarea { font: inherit; color: inherit; }
+input::placeholder, textarea::placeholder { color: inherit; opacity: .55; }
+a { color: var(--accent); }
+[hidden] { display: none !important; }
+button:focus:not(:focus-visible) { outline: none; }
+
+/* ---- Shared bits -------------------------------------------------------- */
+
+.icon {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  white-space: nowrap;
+  user-select: none;
+  font-feature-settings: 'liga';
+}
+.icon.filled { font-variation-settings: 'FILL' 1; }
+
+.mono { font-family: var(--mono); font-size: 12px; }
+.muted { color: var(--muted); }
+.faint { color: var(--faint); font-size: 11px; }
+.caption { font: 500 11px var(--mono); color: var(--subtle); letter-spacing: .06em; }
+
+.pill-button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 0 0 1px rgba(29, 27, 26, .08);
+}
+.pill-button:hover { box-shadow: 0 0 0 1px rgba(29, 27, 26, .25); }
+
+.ghost-pill {
+  font: 500 12px var(--mono);
+  color: var(--muted);
+  padding: 7px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 0 0 1px rgba(29, 27, 26, .12);
+}
+.ghost-pill:hover { background: var(--surface); }
+
+.link-button { font-size: 15px; font-weight: 500; color: var(--accent); }
+.danger-link { font-size: 13px; color: var(--danger); }
+
+.app { height: 100vh; display: flex; flex-direction: column; }
+
+/* ---- Top bar ------------------------------------------------------------ */
+
+.topbar {
+  height: 64px;
+  flex-shrink: 0;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.brand-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--ink); }
+
+.topbar-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  white-space: nowrap;
+}
+
+/* Year stepper: ‹ 2026 › (the year can also be typed, then Enter) */
+.year-stepper {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 38px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px rgba(29, 27, 26, .1);
+}
+.year-stepper input {
+  width: 56px;
+  border: none;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  font: 700 18px var(--sans);
+  letter-spacing: -.02em;
+}
+.year-step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+.year-step:hover:not(:disabled) { background: var(--bg); }
+.year-step:disabled { opacity: .3; cursor: default; }
+
+/* ---- Workspace + panels ------------------------------------------------- */
+
+.workspace { flex: 1; display: flex; min-height: 0; position: relative; }
+
+.panel {
+  flex-shrink: 0;
+  width: min(400px, 34%);
+  margin: 14px;
+  background: var(--surface);
+  border-radius: 18px;
+  box-shadow: 0 0 0 1px rgba(29, 27, 26, .06), 0 12px 40px rgba(40, 30, 20, .06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header and footer shared by the journal and the editor */
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px 20px 0;
+}
+.panel-day { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+.panel-chip {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #dcd6d0;
+}
+.panel-day-text { display: flex; flex-direction: column; min-width: 0; }
+.panel-date {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Journal panel ------------------------------------------------------ */
+
+.journal { margin-right: 0; }
+
+.segmented { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--bg); flex-shrink: 0; }
+.segmented button { padding: 5px 12px; border-radius: 999px; font-size: 13px; font-weight: 500; }
+.segmented button.active { background: var(--surface); box-shadow: 0 1px 3px rgba(0, 0, 0, .08); }
+
+.journal-title {
+  margin: 16px 20px 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: 700 24px var(--sans);
+  letter-spacing: -.02em;
+}
+
+.journal-write { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+.md-toolbar { display: flex; gap: 2px; margin: 12px 14px 0; padding: 4px; border-radius: 10px; background: var(--bg); }
+.md-toolbar button {
+  flex: 1;
+  height: 30px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  color: var(--ink-2);
+}
+.md-toolbar button:hover { background: var(--surface); }
+
+.journal textarea {
+  flex: 1;
+  margin: 0;
+  padding: 14px 20px 20px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  font: 400 14px/1.65 var(--mono);
+}
+
+.journal-preview { flex: 1; overflow-y: auto; padding: 14px 20px 20px; font-size: 15px; line-height: 1.6; text-wrap: pretty; }
+
+.panel-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px 14px;
+  border-top: 1px solid rgba(29, 27, 26, .06);
+  font-size: 11px;
+  color: var(--subtle);
+  white-space: nowrap;
+}
+
+/* Rendered markdown */
+.markdown p { margin: 0 0 12px; }
+.markdown ul, .markdown ol { margin: 0 0 12px; padding-left: 22px; }
+.markdown li { margin: 2px 0; }
+.markdown li.task { list-style: none; margin-left: -22px; }
+.markdown li.task .icon { font-size: 18px; vertical-align: -4px; margin-right: 6px; }
+.markdown .h1, .markdown .h2, .markdown .h3 { font-weight: 700; letter-spacing: -.01em; margin: 6px 0 8px; }
+.markdown .h1 { font-size: 22px; }
+.markdown .h2 { font-size: 18px; }
+.markdown .h3 { font-size: 15px; }
+.markdown blockquote { margin: 0 0 12px; padding: 2px 0 2px 14px; box-shadow: inset 2px 0 0 #d8d1cb; color: var(--ink-3); }
+.markdown code { font-family: var(--mono); font-size: .88em; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+.markdown .empty { margin: 0; color: var(--faint); }
+
+/* ---- Calendar ----------------------------------------------------------- */
+
+.calendar-scroll { flex: 1; min-width: 0; overflow: auto; scrollbar-width: none; container-type: inline-size; }
+.calendar-scroll::-webkit-scrollbar { display: none; }
+.calendar {
+  /* Day cells shrink (down to 28px) when both side panels are open, so the grid always fits. */
+  --cell-w: clamp(28px, (100cqw - var(--label-w) - 48px) / var(--columns, 14), 40px);
+  width: max-content;
+  padding: 24px 24px 160px;
+  margin: 0 auto;
+}
+
+.week-head {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding: 4px 0 0 var(--label-w);
+  background: var(--bg);
+}
+.week-head span { width: var(--cell-w); text-align: center; font: 500 10px var(--mono); color: var(--faint); }
+
+.year-more { display: flex; justify-content: center; padding: 12px 0 0 var(--label-w); }
+.year-more.bottom { padding-top: 36px; }
+
+.year { padding-top: 28px; }
+.year-title { display: flex; align-items: baseline; gap: 10px; margin: 0 0 10px var(--label-w); }
+.year-title strong { font-size: 22px; letter-spacing: -.02em; }
+.year-title .mono { font-size: 11px; color: var(--subtle); }
+
+.row { display: flex; align-items: center; height: var(--cell-h); }
+.row-label { width: var(--label-w); font: 500 11px var(--mono); color: var(--subtle); letter-spacing: .04em; }
+
+/* A single day */
+.cell {
+  position: relative;
+  z-index: 1;
+  width: var(--cell-w);
+  height: var(--cell-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cell[data-date] { cursor: pointer; }
+.cell[data-date]:hover { z-index: 10; }
+.cell.is-popped { z-index: 20; }
+
+/* Rings: white disc when selected, thin ring for today */
+.cell.is-selected::before,
+.cell.is-today:not(.is-selected)::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+}
+.cell.is-selected::before { width: 32px; height: 32px; background: var(--surface); box-shadow: 0 0 0 1.5px var(--ink); }
+.cell.is-today:not(.is-selected)::before { width: 24px; height: 24px; box-shadow: 0 0 0 1.5px var(--ink); }
+
+.mark { position: relative; transition: transform .12s; }
+.mark.dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ink); }
+.cell.is-future .mark.dot { width: 4px; height: 4px; background: #cdc6c0; }
+.mark.icon { font-size: 22px; font-variation-settings: 'FILL' 1, 'wght' 500; }
+.cell.is-future .mark.icon { opacity: .5; }
+.cell[data-date]:hover:not(.is-selected) .mark { transform: scale(1.35); }
+
+/* Small bar under a day that has a journal entry */
+.note-bar {
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 2px;
+  border-radius: 2px;
+  background: #b5aea8;
+  display: none;
+}
+.cell.has-note .note-bar { display: block; }
+
+/* Hover tooltip for marked days */
+.tip {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 7px 13px 8px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+  pointer-events: none;
+}
+.tip::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: var(--ink);
+  transform: translateX(-50%) rotate(45deg);
+}
+.tip-date { font: 400 11px var(--mono); color: #bdb6b0; }
+.tip-label { font-size: 14px; }
+.cell.has-entry:hover:not(.is-popped) .tip { display: flex; }
+
+/* ---- Quick-entry popover ------------------------------------------------ */
+
+.popover {
+  position: absolute;
+  left: 50%;
+  width: 300px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 14px;
+  background: var(--ink);
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, .24);
+  cursor: default;
+  text-align: left;
+}
+.popover.above { bottom: calc(100% + 6px); }
+.popover.below { top: calc(100% + 6px); }
+.popover.align-center { transform: translateX(-50%); }
+.popover.align-left { transform: translateX(-28px); }
+.popover.align-right { transform: translateX(calc(-100% + 28px)); }
+
+.popover-head { display: flex; justify-content: space-between; align-items: center; color: #bdb6b0; }
+.popover-close { font-size: 18px; color: var(--subtle); cursor: pointer; }
+
+.popover input {
+  border: none;
+  outline: none;
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, .1);
+  font: 400 15px var(--sans);
+  color: #fff;
+}
+
+.popover-icons { display: flex; justify-content: space-between; align-items: center; }
+.popover-icons button {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 21px;
+  color: #fff;
+}
+.popover-icons button:hover { background: rgba(255, 255, 255, .14); }
+.popover-icons button.active { background: rgba(255, 255, 255, .18); }
+.popover-icons button.more { font-size: 20px; background: rgba(255, 255, 255, .12); }
+.popover-icons button.more:hover { background: rgba(255, 255, 255, .22); }
+
+.popover-clear { align-self: flex-start; font-size: 13px; color: #e98a7d; }
+
+/* ---- Day editor panel --------------------------------------------------- */
+
+.editor { margin-left: 0; }
+
+/* Everything between header and footer scrolls together, like the journal's writing area */
+.editor-body { position: relative; flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none; }
+.editor-body::-webkit-scrollbar { display: none; }
+
+.editor-preview { display: flex; justify-content: center; padding: 20px 0 18px; }
+.editor-icon-box {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border-radius: 24px;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.editor-icon-box > .icon:first-child { font-size: 48px; font-variation-settings: 'FILL' 1, 'wght' 500; color: #dcd6d0; }
+.editor-clear-icon {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #c9c3be;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.editor-fields { padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
+.editor-label {
+  border: none;
+  outline: none;
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 13px 14px;
+  font: 400 16px var(--sans);
+}
+
+.swatches { display: flex; justify-content: space-between; align-items: center; padding: 2px 6px; }
+.swatches button { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; }
+.swatches button span { width: 18px; height: 18px; border-radius: 50%; transition: all .15s; }
+.swatches button.active span { width: 26px; height: 26px; box-shadow: 0 0 0 3px #fff, 0 0 0 4.5px currentColor; }
+
+.icon-section { display: flex; flex-direction: column; gap: 6px; }
+.icon-grid { display: grid; grid-template-columns: repeat(7, 1fr); row-gap: 4px; }
+.icon-grid button {
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-variation-settings: 'FILL' 1;
+}
+.icon-grid button:hover { background: var(--bg); }
+.icon-grid button.active { background: var(--hover); }
+
+.icon-browser-head { position: sticky; top: 0; z-index: 2; background: var(--surface); padding-top: 14px; }
+
+.icon-search {
+  margin: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--subtle);
+}
+.icon-search .icon { font-size: 20px; }
+.icon-search input::-webkit-search-cancel-button { filter: grayscale(1); opacity: .5; cursor: pointer; }
+.icon-search input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; font-size: 14px; color: var(--ink); }
+
+.show-more { display: block; margin: 12px auto 0; }
+.no-results { grid-column: 1 / -1; padding: 16px 0; font-size: 13px; color: var(--subtle); text-align: center; }
+
+.category-tabs { margin-top: 6px; display: flex; padding: 0 14px; border-bottom: 1px solid rgba(29, 27, 26, .08); }
+.category-tabs button { flex: 1; height: 44px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #a39c96; }
+.category-tabs button.active { color: var(--ink); box-shadow: inset 0 -2px 0 var(--ink); }
+
+.category-name { padding: 12px 20px 0; }
+.category-icons { padding: 6px 20px 16px; }
+.category-icons .icon-grid button { height: 46px; }
+
+
+/* ---- Small screens: stack the journal under the calendar ---------------- */
+
+@media (max-width: 860px) {
+  .topbar { padding: 0 14px; }
+  .brand, #marked-count { display: none; }
+  .workspace { flex-direction: column-reverse; overflow-y: auto; }
+  .journal { width: auto; height: 420px; margin: 0 14px 14px; }
+  .calendar-scroll { flex: none; height: 60vh; }
+  .editor { position: absolute; inset: 0; width: auto; margin: 14px; z-index: 30; }
+}

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dot Diary</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%225%22 fill=%22%231d1b1a%22/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block">
+  <link rel="stylesheet" href="css/styles.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <div class="app">
+
+    <!-- Top bar: title, year picker, counters -->
+    <header class="topbar">
+      <div class="brand"><span class="brand-dot"></span>Dot diary</div>
+
+      <div class="year-stepper">
+        <button class="icon year-step" id="year-prev" title="Previous year" aria-label="Previous year">chevron_left</button>
+        <input id="year-input" inputmode="numeric" maxlength="4" aria-label="Year">
+        <button class="icon year-step" id="year-next" title="Next year" aria-label="Next year">chevron_right</button>
+      </div>
+
+      <div class="topbar-right">
+        <span class="mono muted" id="marked-count">0 days marked</span>
+        <button class="pill-button" id="today-button">Today</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+
+      <!-- Left: journal for the selected day -->
+      <section class="panel journal" data-panel>
+        <div class="panel-head">
+          <div class="panel-day">
+            <span class="icon filled panel-chip" id="journal-icon">circle</span>
+            <div class="panel-day-text">
+              <span class="caption">JOURNAL</span>
+              <span class="mono panel-date" id="journal-date"></span>
+            </div>
+          </div>
+          <div class="segmented">
+            <button class="active" id="journal-write">Write</button>
+            <button id="journal-preview">Preview</button>
+          </div>
+        </div>
+
+        <input class="journal-title" id="journal-title" placeholder="Untitled">
+
+        <div class="journal-write" id="journal-write-view">
+          <div class="md-toolbar" id="md-toolbar"></div>
+          <textarea id="journal-body" placeholder="Write about the day… Markdown works: **bold**, *italic*, # heading, - list"></textarea>
+        </div>
+        <div class="journal-preview markdown" id="journal-preview-view" hidden></div>
+
+        <footer class="panel-foot mono">
+          <span id="journal-words">0 words</span>
+          <span id="journal-status">Autosaves</span>
+        </footer>
+      </section>
+
+      <!-- Middle: the dot calendar -->
+      <section class="calendar-scroll" id="calendar-scroll">
+        <div class="calendar">
+          <div class="week-head" id="week-head"></div>
+          <div class="year-more"><button class="ghost-pill" id="show-earlier"></button></div>
+          <div id="years"></div>
+          <div class="year-more bottom"><button class="ghost-pill" id="show-later"></button></div>
+        </div>
+      </section>
+
+      <!-- Right: full day editor (icon, color, label) – opened from the popover -->
+      <section class="panel editor" id="editor" data-panel hidden>
+        <div class="panel-head">
+          <div class="panel-day">
+            <span class="icon filled panel-chip" id="editor-chip">circle</span>
+            <div class="panel-day-text">
+              <span class="caption">ICON &amp; COLOR</span>
+              <span class="mono panel-date" id="editor-date"></span>
+            </div>
+          </div>
+          <div class="segmented">
+            <button class="active" id="editor-done">Done</button>
+          </div>
+        </div>
+
+        <div class="editor-body" id="editor-body">
+          <div class="editor-preview">
+            <div class="editor-icon-box">
+              <span class="icon filled" id="editor-icon">circle</span>
+              <span class="icon editor-clear-icon" id="editor-clear-icon" hidden>close</span>
+            </div>
+          </div>
+
+          <div class="editor-fields">
+            <input class="editor-label" id="editor-label" placeholder="Describe the day" maxlength="80">
+            <div class="swatches" id="swatches"></div>
+            <div class="icon-section">
+              <span class="caption">RECENT</span>
+              <div class="icon-grid" id="recent-icons"></div>
+            </div>
+          </div>
+
+          <!-- Search + tabs stick to the top while scrolling through icons -->
+          <div class="icon-browser-head" id="icon-browser-head">
+            <label class="icon-search">
+              <span class="icon">search</span>
+              <input id="icon-search" type="search" placeholder="Search 4,000 icons (dog, coffee, gym…)" autocomplete="off">
+            </label>
+            <nav class="category-tabs" id="category-tabs"></nav>
+          </div>
+          <div class="caption category-name" id="category-name"></div>
+          <div class="category-icons">
+            <div class="icon-grid" id="category-icons"></div>
+            <button class="ghost-pill show-more" id="show-more-icons" hidden>Show more</button>
+          </div>
+        </div>
+
+        <footer class="panel-foot mono">
+          <button class="danger-link" id="editor-clear-day">Clear day</button>
+          <span>Esc to close</span>
+        </footer>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Quick-entry popover; moved into whichever day cell is clicked -->
+  <div class="popover" id="popover" data-pop hidden>
+    <div class="popover-head">
+      <span class="mono" id="popover-date"></span>
+      <span class="icon popover-close" id="popover-close">close</span>
+    </div>
+    <input id="popover-label" placeholder="What mattered this day?" maxlength="80">
+    <div class="popover-icons" id="popover-icons"></div>
+    <button class="popover-clear" id="popover-clear" hidden>Clear day</button>
+  </div>
+</body>
+</html>
