@@ -124,3 +124,9 @@ public/
 - **Icons and fonts:** [Material Symbols Rounded](https://fonts.google.com/icons) and [IBM Plex Mono](https://fonts.google.com/specimen/IBM+Plex+Mono) from Google Fonts.
 - **Backend:** [Express 5](https://expressjs.com) plus the built-in `node:sqlite`.
 - **Tables:** `days` (one row per marked day: icon, color, label) and `journal` (one row per day with an entry: title and markdown body).
+
+## Screenshots
+
+**Diary:** a year of days in the dot grid, with the journal for the selected day on the left and the icon and color editor on the right.
+
+![Dot Diary with the journal, the dot grid and the day editor](docs/screenshots/diary.png)
