@@ -335,6 +335,29 @@ button:focus:not(:focus-visible) { outline: none; }
 .cell.is-future .mark.icon { opacity: .5; }
 .cell[data-date]:hover:not(.is-selected) .mark { transform: scale(1.35); }
 
+/* Icons wiggle as they grow on hover, and do a jelly when their icon or color changes */
+@media (prefers-reduced-motion: no-preference) {
+  .cell[data-date]:hover:not(.is-selected) .mark.icon { animation: hover-wiggle .45s ease-out both; }
+  .cell .mark.is-jelly { animation: jelly .8s ease both; }
+}
+
+@keyframes hover-wiggle {
+  0% { transform: scale(1) rotate(0); }
+  30% { transform: scale(1.4) rotate(-10deg); }
+  55% { transform: scale(1.32) rotate(7deg); }
+  80% { transform: scale(1.36) rotate(-3deg); }
+  100% { transform: scale(1.35) rotate(0); }
+}
+
+@keyframes jelly {
+  0%, 100% { transform: scale(1, 1); }
+  25% { transform: scale(1.25, .75); }
+  40% { transform: scale(.8, 1.2); }
+  55% { transform: scale(1.12, .88); }
+  70% { transform: scale(.95, 1.05); }
+  85% { transform: scale(1.03, .97); }
+}
+
 /* Small bar under a day that has a journal entry */
 .note-bar {
   position: absolute;

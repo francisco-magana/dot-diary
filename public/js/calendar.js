@@ -44,8 +44,11 @@ export function initCalendar({ onDayClick, onActiveYear }) {
   scroller.addEventListener('scroll', trackActiveYear, { passive: true });
 
   on('entry', date => {
+    const before = markLook(date);
     paintDay(date);
     paintYearCount(yearOf(date));
+    // Typing a label also saves the day, so only a new icon or color gets the jelly.
+    if (state.entries[date] && markLook(date) !== before) playJelly(date);
   });
   on('note', paintDay);
   on('focus', paintSelection);
@@ -142,6 +145,21 @@ function paintCell(cell) {
 
   cell.querySelector('.tip-date').textContent = formatDay(date);
   cell.querySelector('.tip-label').textContent = entry ? entry.label || 'Untitled' : '';
+}
+
+/** The icon and color a day's mark is showing, to tell when they change. */
+function markLook(date) {
+  const mark = cellFor(date)?.querySelector('.mark');
+  return mark ? `${mark.textContent} ${mark.style.color}` : '';
+}
+
+function playJelly(date) {
+  const mark = cellFor(date)?.querySelector('.mark');
+  if (!mark) return;
+  mark.classList.remove('is-jelly');
+  void mark.offsetWidth; // restart the animation if it is still playing
+  mark.classList.add('is-jelly');
+  mark.addEventListener('animationend', () => mark.classList.remove('is-jelly'), { once: true });
 }
 
 // Days that currently have a selection ring, so we can clear it when focus moves.
