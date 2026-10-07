@@ -17,6 +17,12 @@ const writeTab = document.getElementById('journal-write');
 const previewTab = document.getElementById('journal-preview');
 const wordsEl = document.getElementById('journal-words');
 const statusEl = document.getElementById('journal-status');
+const panel = document.querySelector('.journal');
+const toggleButton = document.getElementById('journal-toggle');
+
+// On small screens the journal sits under the calendar, so it folds up and down instead.
+const stacked = window.matchMedia('(max-width: 860px)');
+const COLLAPSED_KEY = 'dot-diary:journal-collapsed';
 
 const SAVE_DELAY_MS = 600;
 
@@ -45,6 +51,9 @@ export function initJournal() {
   bodyInput.addEventListener('input', () => change({ body: bodyInput.value }));
   writeTab.addEventListener('click', () => setView('write'));
   previewTab.addEventListener('click', () => setView('preview'));
+  toggleButton.addEventListener('click', () => setCollapsed(!panel.classList.contains('is-collapsed')));
+  stacked.addEventListener('change', paintToggle);
+  setCollapsed(readCollapsed());
 
   on('select', load);
   on('entry', changedDate => changedDate === date && paintHeader());
@@ -121,6 +130,36 @@ function setView(view) {
   writeTab.classList.toggle('active', !preview);
   previewTab.classList.toggle('active', preview);
   paintBody();
+}
+
+// ---- Collapsing ----------------------------------------------------------
+
+function setCollapsed(collapsed) {
+  panel.classList.toggle('is-collapsed', collapsed);
+  toggleButton.setAttribute('aria-expanded', String(!collapsed));
+  paintToggle();
+  try {
+    localStorage.setItem(COLLAPSED_KEY, collapsed ? '1' : '');
+  } catch {
+    // Storage can be blocked; the panel still works, it just won't remember.
+  }
+}
+
+function readCollapsed() {
+  try {
+    return localStorage.getItem(COLLAPSED_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function paintToggle() {
+  const collapsed = panel.classList.contains('is-collapsed');
+  if (stacked.matches) toggleButton.textContent = collapsed ? 'expand_more' : 'expand_less';
+  else toggleButton.textContent = collapsed ? 'left_panel_open' : 'left_panel_close';
+  const label = collapsed ? 'Show journal' : 'Hide journal';
+  toggleButton.title = label;
+  toggleButton.setAttribute('aria-label', label);
 }
 
 // ---- Markdown toolbar ----------------------------------------------------

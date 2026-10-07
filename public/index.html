@@ -45,20 +45,23 @@
             <button class="active" id="journal-write">Write</button>
             <button id="journal-preview">Preview</button>
           </div>
+          <button class="icon panel-toggle" id="journal-toggle" aria-controls="journal-content" aria-expanded="true"></button>
         </div>
 
-        <input class="journal-title" id="journal-title" placeholder="Untitled">
+        <div class="journal-content" id="journal-content">
+          <input class="journal-title" id="journal-title" placeholder="Untitled">
 
-        <div class="journal-write" id="journal-write-view">
-          <div class="md-toolbar" id="md-toolbar"></div>
-          <textarea id="journal-body" placeholder="Write about the day… Markdown works: **bold**, *italic*, # heading, - list"></textarea>
+          <div class="journal-write" id="journal-write-view">
+            <div class="md-toolbar" id="md-toolbar"></div>
+            <textarea id="journal-body" placeholder="Write about the day… Markdown works: **bold**, *italic*, # heading, - list"></textarea>
+          </div>
+          <div class="journal-preview markdown" id="journal-preview-view" hidden></div>
+
+          <footer class="panel-foot mono">
+            <span id="journal-words">0 words</span>
+            <span id="journal-status">Autosaves</span>
+          </footer>
         </div>
-        <div class="journal-preview markdown" id="journal-preview-view" hidden></div>
-
-        <footer class="panel-foot mono">
-          <span id="journal-words">0 words</span>
-          <span id="journal-status">Autosaves</span>
-        </footer>
       </section>
 
       <!-- Middle: the dot calendar -->

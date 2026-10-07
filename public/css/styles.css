@@ -200,7 +200,31 @@ button:focus:not(:focus-visible) { outline: none; }
 
 /* ---- Journal panel ------------------------------------------------------ */
 
-.journal { margin-right: 0; }
+.journal { margin-right: 0; transition: width .2s ease; }
+.journal-content { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+.panel-toggle {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  margin-right: -6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: var(--muted);
+}
+.panel-toggle:hover { background: var(--bg); color: var(--ink); }
+
+/* Collapsed: a narrow strip with the day's icon and the expand button */
+.journal.is-collapsed { width: 60px; }
+.journal.is-collapsed .journal-content,
+.journal.is-collapsed .panel-day-text,
+.journal.is-collapsed .segmented { display: none; }
+.journal.is-collapsed .panel-head { flex-direction: column; padding: 14px 0; }
+.journal.is-collapsed .panel-day { flex: none; }
+.journal.is-collapsed .panel-toggle { margin-right: 0; }
 
 .segmented { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--bg); flex-shrink: 0; }
 .segmented button { padding: 5px 12px; border-radius: 999px; font-size: 13px; font-weight: 500; }
@@ -558,7 +582,13 @@ button:focus:not(:focus-visible) { outline: none; }
   .topbar { padding: 0 14px; }
   .brand, #marked-count { display: none; }
   .workspace { flex-direction: column-reverse; overflow-y: auto; }
-  .journal { width: auto; height: 420px; margin: 0 14px 14px; }
+  .journal { width: auto; height: 420px; margin: 0 14px 14px; transition: none; }
+  /* Collapsed under the calendar: just the header row */
+  .journal.is-collapsed { width: auto; height: auto; }
+  .journal.is-collapsed .panel-head { flex-direction: row; padding: 16px 20px; }
+  .journal.is-collapsed .panel-day { flex: 1; }
+  .journal.is-collapsed .panel-day-text { display: flex; }
+  .journal.is-collapsed .panel-toggle { margin-right: -6px; }
   .calendar-scroll { flex: none; height: 60vh; }
   .editor { position: absolute; inset: 0; width: auto; margin: 14px; z-index: 30; }
 }
